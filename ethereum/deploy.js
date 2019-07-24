@@ -8,8 +8,8 @@ const compiledFactory = require('./build/CampaignFactory.json');
     2) link to network
     */
 const provider = new HDWalletProvider(
-    'Seed phrase',
-    'infuro link'
+    `${process.env.SEED_KEY}`,
+    'https://rinkeby.infura.io/v3/ad66eb1337e043b2b50abe1323fff5f0'
 );
 
 const web3 = new Web3(provider);
