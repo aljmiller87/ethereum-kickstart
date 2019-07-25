@@ -1,13 +1,14 @@
 import React from 'react';
-import { Card, Grid } from 'semantic-ui-react';
+import { Card, Grid, Button } from 'semantic-ui-react';
 import web3 from '../../ethereum/web3';
-
 import Layout from '../../components/Layout';
 import Campaign from '../../ethereum/campaign';
 import ContributeForm from '../../components/ContributeForm';
+import { Link } from '../../routes';
 
 const CampaignShow = props => {
     const {
+        address,
         balance,
         manager,
         minimumContribution,
@@ -15,8 +16,21 @@ const CampaignShow = props => {
         approversCount
     } = props;
 
-    const renderCards = () => {
+    // const fetchContractSummary = async () => {
+    //     console.log('address in fetchContractSummary', address);
+    //     const campaign = Campaign(address);
+    //     const summary = await campaign.methods.getSummary().call();
+    //     return {
+    //         address,
+    //         minimumContribution: summary[0],
+    //         balance: summary[1],
+    //         requestsCount: summary[2],
+    //         approversCount: summary[3],
+    //         manager: summary[4]
+    //     }
+    // }
 
+    const renderCards = () => {
 
         const items = [
             {
@@ -50,22 +64,36 @@ const CampaignShow = props => {
 
         return <Card.Group items={items} />
     };
+
     return (
         <Layout>
             <h3>Campaign Details</h3>
             <Grid>
-                <Grid.Column width={10}>
-                    {renderCards()}
-                </Grid.Column>
-                <Grid.Column width={6}>
-                    <ContributeForm address={props.address}/>
-                </Grid.Column>
+                <Grid.Row>
+                    <Grid.Column width={10}>
+                        {renderCards()}
+
+                    </Grid.Column>
+                    <Grid.Column width={6}>
+                        <ContributeForm address={props.address} />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column>
+                        <Link route={`/campaigns/${address}/requests`}>
+                            <a>
+                                <Button primary>Requests</Button>
+                            </a>
+                        </Link>
+                    </Grid.Column>
+                </Grid.Row>
             </Grid>
         </Layout>
     )
 }
 
 CampaignShow.getInitialProps = async (props) => {
+    console.log('CampaignShow.getInitialProps called');
     const address = props.query.address;
     const campaign = Campaign(address);
     const summary = await campaign.methods.getSummary().call();

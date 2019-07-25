@@ -26,7 +26,7 @@ const CampaignNew = props => {
                 if (confirmationNumber === 1)
                   // ... navigate to root URL
                   Router.pushRoute('/');
-              });
+            });
 
         } catch (err) {
             setErrorMessage(err.message);
